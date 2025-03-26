@@ -6,18 +6,22 @@ class Customer {
       this.name = name;
       this.email = email;
       this.purchaseHistory = [];
+      console.log(`New Customer Created: ${this.name} (${this.email})`);
     };
 
 //Add a purchase amount to purchaseHistory
     addPurchase(amount) {
       if (typeof amount === 'number' && amount > 0) {
         this.purchaseHistory.push(amount);
+        console.log(`${this.name} made a purchase of $${amount.toFixed(2)}`);
       };
     };
   
 //Return total amount spent
-    getTotalSpent() {
-      return this.purchaseHistory.reduce((total, amount) => total + amount, 0);
+getTotalSpent() {
+    const total = this.purchaseHistory.reduce((sum, amount) => sum + amount, 0);
+    console.log(`Total Spent by ${this.name}: $${total.toFixed(2)}`);
+    return total;
     };
   };
 
@@ -28,12 +32,14 @@ class SalesRep {
     constructor(name) {
       this.name = name;
       this.clients = [];
+      console.log(`New SalesRep Created: ${this.name}`);
     };
   
 //Add a customer to the list
     addClient(customer) {
       if (customer instanceof Customer) {
         this.clients.push(customer);
+        console.log(`${customer.name} added to ${this.name}'s client list.`);
       };
     };
   
@@ -42,6 +48,8 @@ class SalesRep {
       const client = this.clients.find(c => c.name === name);
       if (client) {
         const total = client.getTotalSpent();
+        console.log(`Total spent by ${client.name}: $${total.toFixed(2)}`);
+        return total;
       };
     };
   };
@@ -53,6 +61,7 @@ class VIPCustomer extends Customer {
     constructor(name, email, vipLevel) {
       super(name, email);
       this.vipLevel = vipLevel;
+      console.log(`VIP Customer Created: ${this.name} (${this.vipLevel})`);
     };
 
 //Return total spent with 10% loyalty bonus added
@@ -60,6 +69,7 @@ class VIPCustomer extends Customer {
         const baseTotal = super.getTotalSpent();
         const bonus = baseTotal * 0.10;
         const totalWithBonus = baseTotal + bonus;
+        console.log(`${this.name}'s VIP Total (with 10% bonus): $${totalWithBonus.toFixed(2)}`);
         return totalWithBonus;
       };
     };
@@ -75,11 +85,11 @@ const customerB = new Customer("Jamis Winston", "jamis@gmail.com");
 customerB.addPurchase(400);
 customerB.addPurchase(350);
 
-const vipA = new VIPCustomer("Adrian Peterson", "adrian@gmail.com", "Gold");
+const vipA = new VIPCustomer("Adrian Peterson", "adrian@gmail.com");
 vipA.addPurchase(400);
 vipA.addPurchase(200);
 
-const vipB = new VIPCustomer("Jaylen Ramsey", "jaylen@gmail.com", "Platinum");
+const vipB = new VIPCustomer("Jaylen Ramsey", "jaylen@gmail.com");
 vipB.addPurchase(600);
 vipB.addPurchase(350);
 
